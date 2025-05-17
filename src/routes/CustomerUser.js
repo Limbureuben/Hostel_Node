@@ -13,9 +13,10 @@ router.post('/signup', async (req, res) => {
         const existing = await CustomerUser.findOne({ email });
         if (existing) return res.status(400).json({ message: 'Email already in use' });
 
-        const MatchPassword = password === confirmPassword;
-        if (!MatchPassword) return res.status(400).json({ message: 'Passwords do not match' });
-
+        const MatchPassword = (password || '').trim() === (confirmPassword || '').trim();
+        if (!MatchPassword) {
+            return res.status(400).json({ message: 'Passwords do not match' });
+        }
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const newUser = await CustomerUser.create({

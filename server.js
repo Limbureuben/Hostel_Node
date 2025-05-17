@@ -4,6 +4,7 @@ const typeDefs = require('./src/schema/userSchema');
 const resolvers = require('./src/resolvers/userResolvers');
 const connectDB = require('./src/config/db');
 const CustomerRouter = require('./src/routes/CustomerUser');
+const StudentRouter = require('./src/routes/Student');
 
 const startServer = async () => {
   const app = express();
@@ -13,6 +14,7 @@ const startServer = async () => {
   await connectDB();
 
   app.use('/api/customer', CustomerRouter);
+  app.use('/api/registerStudent', StudentRouter );
 
   const server = new ApolloServer({
     typeDefs,

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { modelName } = require('../models/User');
 
 const customerUserSchema = new mongoose.Schema({
     name: { type: String, required: true },

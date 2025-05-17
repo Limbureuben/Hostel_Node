@@ -23,4 +23,6 @@ router.post('/addStudent', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Student registration failed', error: error.message });
     }
-})
+});
+
+module.exports = router;

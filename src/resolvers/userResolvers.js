@@ -2,87 +2,75 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server-express');
 const { validateSignUpInput, validateLoginInput } = require('../utils/auth');
-require('dotenv').config();
 const User = require('../models/User');
+require('dotenv').config();
 
 const generateToken = (user) => {
-    return jwt.sign(
-        {
-            id: user.id,
-            email: user.email
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-    );
+  return jwt.sign(
+    {
+      id: user._id,
+      email: user.email
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: '1h' }
+  );
 };
 
-module.exports = {
-    Mutation: {
-        async signUp(_, { signUpInput }) {
-            const { name, email, password, confirmPassword } = signUpInput;
-            const { valid, errors } = validateSignUpInput(name, email, password, confirmPassword);
+module.exports ={
+  Mutation: {
+    async signUp(_, { signUpInput }) {
+      const { name, email, password, confirmPassword } = signUpInput;
 
-            if (!valid) {
-                throw new UserInputError('Validation Errors', { errors });
-            }
+      const { valid, errors } = ValidateSignUpIniput( name, email, password, confirmPassword );
 
-            // Check if the email is already registered
-            const existingUser = await User.findOne({ where: { email } });
-            if (existingUser) {
-                throw new UserInputError('Email is already in use', { errors: { email: 'Email is already registered' } });
-            }
+      if (!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
 
-            // Check if passwords match
-            if (password !== confirmPassword) {
-                throw new UserInputError('Passwords do not match', { errors: { password: 'Passwords must match' } });
-            }
+      const UserExisting  = await User.findOne({ email });
+      if (UserExisting) {
+        throw new UserInputError('Email alredy is use', { erors: { email: 'Email is already registered'}});
+      }
 
-            // Hash password
-            const hashedPassword = await bcrypt.hash(password, 12);
+      if (password !== confirmPassword) {
+        throw new UserInputError('Password do not match',{ errors: { confirmPassword: 'Password do bot match'}});
+      }
 
-            // Create a new user
-            const newUser = await User.create({
-                name,
-                email,
-                password: hashedPassword
-            });
+      const hashedPassword = await bcrypt.hash(password, 12);
 
-            // Generate JWT token
-            const token = generateToken(newUser);
+      const newUser = new User({
+        name,
+        email,
+        password: hashedPassword
+      });
+    },
 
-            return {
-                ...newUser.dataValues,
-                token
-            };
-        },
-  
-      async login(_, { email, password }) {
-        // Validate input
-        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        const user = result.rows[0];
-  
-        if (!user) {
-          throw new Error('User not found');
-        }
-  
-        // Check if password matches
-        const match = await bcrypt.compare(password, user.password);
-        if (!match) {
-          throw new Error('Invalid email or password');
-        }
-  
-        const token = generateToken(user);
-  
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          token
-        };
-      },
+    async login(_, { LoginInput }) {
+      const { email, password } = LoginInput;
 
-     
-    }
-  };
-  
-  
+      const { valid, errors } = validateLoginInput(email, password);
+
+      if (!valid) {
+        throw new UserInputError('Erors', { errors });
+      }
+
+      if (!user) {
+        throw new UserIbputError('User not found', { errors: { email: 'User not found'}});
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        throw new UserInputError('Wrong credentials', { errors: { password: 'Wrong credentials'}});
+      }
+
+      const token = generateToken(user);
+
+      return {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        token
+      };
+    },
+  }
+};

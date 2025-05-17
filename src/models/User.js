@@ -1,28 +1,23 @@
-const { Sequelize, DataTypes } = require('sequelize');
-require('dotenv').config();
+const mongoose = require('mongoose');
 
-
-const sequelize = new Sequelize(process.env.PG_DATABASE, process.env.PG_USER, process.env.PG_PASSWORD, {
-  host: process.env.PG_HOST,
-  dialect: 'postgres',
-});
-
-const User = sequelize.define('User', {
+const userSchema = new mongoose.Schema({
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
   },
   password: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
+  confirmPassword: {
+    type: String,
+    required: true,
+  }
 });
 
-sequelize.sync();
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

@@ -34,5 +34,23 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    
-})
+    const { email, password } = res.body;
+
+    try {
+        const user = await CustomerUser.findOne({ email });
+
+        if (!user) return res.status(400).json({ message: 'User not found' });
+
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) return res.status(400).json({ message: 'Invalid credentials' });
+
+        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h'});
+
+        res.json({ user: { id: user._id, name: user.name, email: user.email}, token });
+    } catch (err) {
+        res.status(500).json({ message: 'Login failed', error: err.message });
+    }
+});
+
+module.exports = router;

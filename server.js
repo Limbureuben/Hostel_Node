@@ -1,8 +1,8 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const typeDefs = require('./graphql/schema');
-const resolvers = require('./graphql/resolvers');
-const connectDB = require('./config/db');
+const typeDefs = require('./src/schema/userSchema');
+const resolvers = require('./src/resolvers/userResolvers');
+const connectDB = require('./src/config/db');
 
 const startServer = async () => {
   const app = express();

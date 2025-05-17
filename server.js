@@ -3,11 +3,16 @@ const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./src/schema/userSchema');
 const resolvers = require('./src/resolvers/userResolvers');
 const connectDB = require('./src/config/db');
+const CustomerRouter = require('./src/routes/CustomerUser');
 
 const startServer = async () => {
   const app = express();
 
+  app.use(express.json());
+
   await connectDB();
+
+  app.use('/api/customer', CustomerRouter);
 
   const server = new ApolloServer({
     typeDefs,

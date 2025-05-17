@@ -18,7 +18,11 @@ router.post('/signup', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const newUser = await CustomerUser.create({ name, email, password: hashedPassword, passwordConfirm: confirmPassword });
+        const newUser = await CustomerUser.create({
+            name,
+            email,
+            password: hashedPassword
+        });
         
         const token = jwt.sign({ id: newUser._id, email: newUser.email }, process.env.JWT_SECRET, { expiresIn: '1h'});
 
@@ -28,3 +32,7 @@ router.post('/signup', async (req, res) => {
         res.status(500).json({ message: 'Registration failed', error: error.message });
     }
 });
+
+router.post('/login', async (req, res) => {
+    
+})

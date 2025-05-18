@@ -14,7 +14,7 @@ const startServer = async () => {
   await connectDB();
 
   app.use('/api/customer', CustomerRouter);
-
+  app.use('/api/registerStudent', StudentRouter );
 
   const server = new ApolloServer({
     typeDefs,

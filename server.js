@@ -12,10 +12,10 @@ const startServer = async () => {
   await connectDB();
 
   // REST API routes
-  app.use('/api/registerorganization', OrganizationRouter);
-  app.use('/api/registerpackage', PackagesRouter);
-  app.use('/api/register', UserRegistration);
-  app.use('/api/login', UserLogin);
+  app.use('/registerorganization', OrganizationRouter);
+  app.use('/registerpackage', PackagesRouter);
+  app.use('/register', UserRegistration);
+  app.use('/login', UserLogin);
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {

@@ -12,8 +12,8 @@ const startServer = async () => {
   await connectDB();
 
   // REST API routes
-  app.use('/api/organization', OrganizationRouter);
-  app.use('/api/packages', PackagesRouter);
+  app.use('/api/registerorganization', OrganizationRouter);
+  app.use('/api/registerpackage', PackagesRouter);
   app.use('/api/register', UserRegistration);
   app.use('/api/login', UserLogin);
 

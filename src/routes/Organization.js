@@ -1,5 +1,5 @@
 const express = require('express');
-const { Organization, Packages } = '../models/Organization.js'
+const { Organization, Packages } = require('../models/Organization')
 require('dotenv').config();
 
 const router = express.Router();

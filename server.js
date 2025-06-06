@@ -6,6 +6,7 @@ const connectDB = require('./src/config/db');
 const CustomerRouter = require('./src/routes/CustomerUser');
 const StudentRouter = require('./src/routes/Student');
 const OrganizationRouter = require('./src/routes/Organization')
+const PackagesRouter = require('./src/routes/Organization')
 
 const startServer = async () => {
   const app = express();
@@ -17,6 +18,7 @@ const startServer = async () => {
   app.use('/api/customer', CustomerRouter);
   app.use('/api/registerStudent', StudentRouter );
   app.use('/api/addorganization', OrganizationRouter);
+  app.use('/registerPackages', PackagesRouter);
 
   const server = new ApolloServer({
     typeDefs,

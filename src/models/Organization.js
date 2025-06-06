@@ -7,4 +7,14 @@ const OrganizationSchema = new mongoose.Schema({
     location: { type: String, required: true }
 })
 
-model.exports = mongoose.model('Organization', OrganizationSchema);
+const OrganizationPackageSchema = new mongoose.Schema({
+    package_name: { type: String, required: true},
+    discriptions: { type: String, required: true },
+    link: { type: String, required: true },
+    price: { type: String, required: true }
+})
+
+const Organization = mongoose.model('Organization', OrganizationSchema);
+const Package = mongoose.model('Packages', OrganizationPackageSchema);
+
+module.exports = { Organization, Package };

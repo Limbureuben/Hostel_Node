@@ -44,6 +44,29 @@ router.post('/register', async (req, res)=> {
     }
 });
 
-router.post('/login', (req, res)=> {
-    
-})
+router.post('/login', async (req, res)=> {
+    const { username, password } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user || !(await user.matchPassword(password))) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+        }
+        res.status(200).json({
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            },
+            token: generateToken(user)
+        })
+    } catch(error) {
+        res.status(500).json({
+            message: "Login failed",
+            error: error.message
+        });
+    }
+});
+
+module.exports = router;

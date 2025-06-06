@@ -42,4 +42,8 @@ router.post('/register', async (req, res)=> {
             error: error.message
         })
     }
+});
+
+router.post('/login', (req, res)=> {
+    
 })

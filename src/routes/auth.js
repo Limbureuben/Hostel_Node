@@ -26,7 +26,7 @@ router.post('/register', async (req, res)=> {
         if (userExist) return res.status(400).json({
             message: "User alredy exist"
         });
-
+        
         const user = await User.create({ username, email, password });
         res.status(201).json({
             user: {

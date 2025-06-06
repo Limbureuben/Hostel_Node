@@ -30,6 +30,20 @@ router.post('/registerorganization', async (req, res) => {
     }
 });
 
+
+router.get('/getAllorganizations', async (req, res) => {
+    try {
+        const organization = await Organization.find();
+        res.status(200).json(organization);
+    } catch(error) {
+        res.status(500).json({
+            message: 'Failed to fetch the data',
+            error: error.message
+        })
+    }
+});
+
+
 router.post('/registerpackage', async (req, res) => {
     const { package_name, discriptions, link, price } = req.body;
 
@@ -56,4 +70,16 @@ router.post('/registerpackage', async (req, res) => {
         });
     }
 });
+
+router.get('getAllPackages', async(req, res)=> {
+   try {
+    const getPackages = await Packages.find();
+    res.status(201).json(getPackages);
+   } catch(error) {
+     res.status(500).json({
+        message: 'Failed to fetch the data',
+        error: error.message
+     })
+   }
+})
 module.exports = router;

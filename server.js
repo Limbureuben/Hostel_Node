@@ -2,8 +2,7 @@ const express = require('express');
 const connectDB = require('./src/config/db');
 const OrganizationRouter = require('./src/routes/Organization');
 const PackagesRouter = require('./src/routes/Organization');
-const UserRegistration = require('./src/routes/auth')
-const UserLogin = require('./src/routes/auth');
+const authRouter = require('./src/routes/auth')
 
 const startServer = async () => {
   const app = express();
@@ -14,8 +13,7 @@ const startServer = async () => {
   // REST API routes
   app.use('/registerorganization', OrganizationRouter);
   app.use('/registerpackage', PackagesRouter);
-  app.use('/api/auth', UserRegistration);
-  app.use('/login', UserLogin);
+  app.use('/api/auth', authRouter);
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {

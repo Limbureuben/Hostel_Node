@@ -6,13 +6,13 @@ require('dotenv').config();
 const router = express.Router();
 
 const generateToken = (user) => {
-  return jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: user._id, username: user.username, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: '7d'
   });
 };
 
 router.post('/register', async (req, res)=> {
-    const { username, email, password, confirmPassword } = req.body;
+    const { username, email, password, confirmPassword, role } = req.body;
 
     if (password != confirmPassword ) {
         return res.status(400).json({
@@ -27,12 +27,13 @@ router.post('/register', async (req, res)=> {
             message: "User alredy exist"
         });
         
-        const user = await User.create({ username, email, password });
+        const user = await User.create({ username, email, password, role: role || 'user'});
         res.status(201).json({
             user: {
             id: user._id,
             username: user.username,
-            email: user.email
+            email: user.email,
+            role: user.role
         },
         token: generateToken(user)
         });

@@ -18,9 +18,9 @@ const startServer = async () => {
   app.use('/api/customer', CustomerRouter);
   app.use('/api/registerStudent', StudentRouter );
   app.use('/api/addorganization', OrganizationRouter);
-  app.use('/registerPackages', PackagesRouter);
-  app.use('api/getOrganizations', OrganizationRouter);
-  app.use('api/getPackages', PackagesRouter)
+  app.use('/api/registerPackages', PackagesRouter);
+  app.use('/api/getOrganizations', OrganizationRouter);
+  app.use('/api/getPackages', PackagesRouter)
 
   const server = new ApolloServer({
     typeDefs,

@@ -71,7 +71,7 @@ router.post('/registerpackage', async (req, res) => {
     }
 });
 
-router.get('getAllPackages', async(req, res)=> {
+router.get('/getPackages', async(req, res)=> {
    try {
     const getPackages = await Packages.find();
     res.status(201).json(getPackages);

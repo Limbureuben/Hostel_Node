@@ -14,7 +14,7 @@ const startServer = async () => {
   // REST API routes
   app.use('/api/organization', OrganizationRouter);
   app.use('/api/packages', PackagesRouter);
-  app.use('/api/registration', UserRegistration);
+  app.use('/api/register', UserRegistration);
   app.use('/api/login', UserLogin);
 
   const PORT = process.env.PORT || 4000;

@@ -14,19 +14,12 @@ router.post('/register-product', async (req, res) => {
             product_category,
             discount_price,
             product_price,
-            product_image
+            product_image: req.file ? req.file.filename : null
         });
 
         res.status(201).json({
-            Product: {
-                id: newproduct._id,
-                product_name,
-                product_descriptions,
-                product_category,
-                discount_price,
-                product_price,
-                product_image
-            }
+            Product: newproduct,
+            message: 'Product uploaded successfully'
         });
     } catch(error) {
         res.status(500).json({
@@ -35,3 +28,5 @@ router.post('/register-product', async (req, res) => {
         });
     }
 });
+
+module.exports = router;

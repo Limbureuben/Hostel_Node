@@ -3,6 +3,7 @@ const connectDB = require('./src/config/db');
 const OrganizationRouter = require('./src/routes/Organization');
 const PackagesRouter = require('./src/routes/Organization');
 const authRouter = require('./src/routes/auth')
+const RegisterProduct = require('./src/routes/ProductRoute')
 
 const startServer = async () => {
   const app = express();
@@ -14,6 +15,7 @@ const startServer = async () => {
   app.use('/registerorganization', OrganizationRouter);
   app.use('/registerpackage', PackagesRouter);
   app.use('/api/auth', authRouter);
+  app.use('/api/register-products', RegisterProduct)
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {

@@ -5,12 +5,12 @@ require('dotenv').config();
 const router = express.Router();
 
 router.post('/registerorganization', async (req, res) => {
-    const { organization_name, discriptions, contact, location } = req.body;
+    const { organization_name, descriptions, contact, location } = req.body;
 
     try {
         const newOrganization = await Organization.create({
             organization_name,
-            discriptions,
+            descriptions,
             contact,
             location
         });
@@ -45,12 +45,12 @@ router.get('/getAllorganizations', async (req, res) => {
 
 
 router.post('/registerpackage', async (req, res) => {
-    const { package_name, discriptions, link, price } = req.body;
+    const { package_name, descriptions, link, price } = req.body;
 
     try {
         const newPackage = await Packages.create({
             package_name,
-            discriptions,
+            descriptions,
             link,
             price
         });

@@ -19,7 +19,15 @@ const OrganizationPackageSchema = new mongoose.Schema({
     created_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 })
 
+const CleanerRegistration = new mongoose.Schema({
+    username: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    passwordConfirm: { type: String, required: true }
+})
+
 const Organization = mongoose.model('Organization', OrganizationSchema);
 const Packages = mongoose.model('Packages', OrganizationPackageSchema);
+const cleanerRegister = mongoose.model('Cleaner', CleanerRegistration);
 
-module.exports = { Organization, Packages };
+module.exports = { Organization, Packages, cleanerRegister };

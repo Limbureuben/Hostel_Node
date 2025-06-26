@@ -2,28 +2,37 @@ const express = require('express');
 const connectDB = require('./src/config/db');
 const OrganizationRouter = require('./src/routes/Organization');
 const PackagesRouter = require('./src/routes/Organization');
-const authRouter = require('./src/routes/auth')
-const RegisterProduct = require('./src/routes/ProductRoute')
-const cors = require('cors')
+const authRouter = require('./src/routes/auth');
+const RegisterProduct = require('./src/routes/ProductRoute');
+const cors = require('cors');
 
 const startServer = async () => {
   const app = express();
+
+  // 1. CORS Middleware - MUST come first
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }));
+
+  // 2. Body Parsing Middleware
   app.use(express.json());
 
+  // 3. Database Connection
   await connectDB();
 
-  // REST API routes
+  // 4. Routes
   app.use('/registerorganization', OrganizationRouter);
   app.use('/registerpackage', PackagesRouter);
   app.use('/api/auth', authRouter);
-  app.use('/api/register-products', RegisterProduct)
+  app.use('/api/register-products', RegisterProduct);
 
-
-  app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  }));
+  // 5. Health Check Endpoint
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
+  });
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {
@@ -31,73 +40,7 @@ const startServer = async () => {
   });
 };
 
-startServer();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const express = require('express');
-// const { ApolloServer } = require('apollo-server-express');
-// const typeDefs = require('./src/schema/userSchema');
-// const resolvers = require('./src/resolvers/userResolvers');
-// const connectDB = require('./src/config/db');
-// const CustomerRouter = require('./src/routes/CustomerUser');
-// const StudentRouter = require('./src/routes/Student');
-// const OrganizationRouter = require('./src/routes/Organization')
-// const PackagesRouter = require('./src/routes/Organization')
-
-// const startServer = async () => {
-//   const app = express();
-
-//   app.use(express.json());
-
-//   await connectDB();
-
-//   app.use('/api/customer', CustomerRouter);
-//   app.use('/api/registerStudent', StudentRouter );
-//   app.use('/api/addorganization', OrganizationRouter);
-//   app.use('/api/registerPackages', PackagesRouter);
-//   app.use('/api/getOrganizations', OrganizationRouter);
-//   app.use('/api/getPackages', PackagesRouter)
-
-//   const server = new ApolloServer({
-//     typeDefs,
-//     resolvers,
-//   });
-
-//   await server.start();
-//   server.applyMiddleware({ app });
-
-//   const PORT = process.env.PORT || 4000;
-//   app.listen(PORT, () => {
-//     console.log(`🚀 Dear Reuben Server ready at http://localhost:${PORT}${server.graphqlPath}`);
-//   });
-// };
-
-// startServer();
+startServer().catch(err => {
+  console.error('Server failed to start:', err);
+  process.exit(1);
+});

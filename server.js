@@ -4,6 +4,7 @@ const OrganizationRouter = require('./src/routes/Organization');
 const PackagesRouter = require('./src/routes/Organization');
 const authRouter = require('./src/routes/auth')
 const RegisterProduct = require('./src/routes/ProductRoute')
+const cors = require('cors')
 
 const startServer = async () => {
   const app = express();
@@ -16,6 +17,13 @@ const startServer = async () => {
   app.use('/registerpackage', PackagesRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/register-products', RegisterProduct)
+
+
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {

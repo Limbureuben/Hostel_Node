@@ -11,67 +11,81 @@ const generateToken = (user) => {
   });
 };
 
-router.post('/register', async (req, res)=> {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-    res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.sendStatus(200);
+// Register route
+router.post('/register', async (req, res) => {
+  const { username, email, password, confirmPassword, role } = req.body;
 
-    const { username, email, password, confirmPassword, role } = req.body;
+  if (password !== confirmPassword) {
+    return res.status(400).json({  // Make sure to RETURN
+      message: 'Passwords do not match'
+    });
+  }
 
-    if (password != confirmPassword ) {
-        return res.status(400).json({
-            message: 'Password do not match'
-        });
+  try {
+    const userExist = await User.findOne({ $or: [{ username }, { email }] });
+
+    if (userExist) {
+      return res.status(400).json({  // Make sure to RETURN
+        message: "User already exists"
+      });
     }
-
-    try {
-        const userExist = await User.findOne({ $or: [{ username }, { email }] });
-
-        if (userExist) return res.status(400).json({
-            message: "User alredy exist"
-        });
-        
-        const user = await User.create({ username, email, password, role: role || 'user'});
-        res.status(201).json({
-            user: {
-            id: user._id,
-            username: user.username,
-            email: user.email,
-        },
-        token: generateToken(user)
-        });
-    } catch(error) {
-        res.status(500).json({
-            message: "Registration failed",
-            error: error.message
-        })
-    }
+    
+    const user = await User.create({ 
+      username, 
+      email, 
+      password, 
+      role: role || 'user'
+    });
+    
+    // Single response
+    res.status(201).json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+      token: generateToken(user)
+    });
+    
+  } catch(error) {
+    console.error('Registration error:', error);
+    res.status(500).json({
+      message: "Registration failed",
+      error: error.message
+    });
+  }
 });
 
-router.post('/login', async (req, res)=> {
-    const { username, password } = req.body;
+// Login route
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
 
-    try {
-        const user = await User.findOne({ username });
+  try {
+    const user = await User.findOne({ username });
 
-        if (!user || !(await user.matchPassword(password))) {
-        return res.status(401).json({ message: 'Invalid username or password' });
-        }
-        res.status(200).json({
-            user: {
-                id: user._id,
-                username: user.username,
-                email: user.email
-            },
-            token: generateToken(user)
-        })
-    } catch(error) {
-        res.status(500).json({
-            message: "Login failed",
-            error: error.message
-        });
+    if (!user || !(await user.matchPassword(password))) {
+      return res.status(401).json({  // Make sure to RETURN
+        message: 'Invalid username or password' 
+      });
     }
+    
+    // Single response
+    res.status(200).json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email
+      },
+      token: generateToken(user)
+    });
+    
+  } catch(error) {
+    console.error('Login error:', error);
+    res.status(500).json({
+      message: "Login failed",
+      error: error.message
+    });
+  }
 });
 
 module.exports = router;

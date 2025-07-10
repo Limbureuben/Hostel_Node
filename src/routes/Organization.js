@@ -31,6 +31,7 @@ router.post('/registerorganization', async (req, res) => {
 });
 
 
+
 router.get('/getAllorganizations', async (req, res) => {
     try {
         const organization = await Organization.find();

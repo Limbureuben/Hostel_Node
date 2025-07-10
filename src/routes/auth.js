@@ -36,8 +36,6 @@ router.post('/register', async (req, res) => {
       password, 
       role: role || 'user'
     });
-    
-    // Single response
     res.status(201).json({
       user: {
         id: user._id,
@@ -88,5 +86,9 @@ router.post('/login', async (req, res) => {
     });
   }
 });
+
+router.get('/getAllusers', async (req, res) => {
+  
+})
 
 module.exports = router;

@@ -87,8 +87,8 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/getAllusers', async (req, res) => {
-  
-})
+// router.get('/getAllusers', async (req, res) => {
+
+// })
 
 module.exports = router;

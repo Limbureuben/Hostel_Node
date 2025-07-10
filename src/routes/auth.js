@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
 
   if (password !== confirmPassword) {
-    return res.status(400).json({  // Make sure to RETURN
+    return res.status(400).json({
       message: 'Passwords do not match'
     });
   }
@@ -43,6 +43,7 @@ router.post('/register', async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        role: user.role
       },
       token: generateToken(user)
     });

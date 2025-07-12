@@ -6,7 +6,7 @@ const authMiddleware = require('../utils/authMiddleware');
 const router = express.Router()
 
 router.post('/register-product', authMiddleware, async (req, res) => {
-    const { name, description, price, discount, stock, mage } = req.body;
+    const { name, description, price, discount, stock, image } = req.body;
 
     try {
         const newproduct = await Product.create({

@@ -115,15 +115,13 @@ router.get('/get-product', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      products: {
-        current_page: products.page,
-        data: products.docs,
-        total: products.totalDocs,
-        per_page: products.limit,
-        last_page: products.totalPages,
-        from: (products.page - 1) * products.limit + 1,
-        to: Math.min(products.page * products.limit, products.totalDocs),
-      }
+      data: products.docs,
+      current_page: products.page,
+      per_page: products.limit,
+      total: products.totalDocs,
+      last_page: products.totalPages,
+      from: (products.page - 1) * products.limit + 1,
+      to: Math.min(products.page * products.limit, products.totalDocs),
     });
 
   } catch (err) {
@@ -134,8 +132,5 @@ router.get('/get-product', async (req, res) => {
     });
   }
 });
-
-
-
 
 module.exports = router;

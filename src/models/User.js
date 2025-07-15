@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema({
    }
 });
 
+userSchema.plugin(mongoosePaginate);
+
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);

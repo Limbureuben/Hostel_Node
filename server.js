@@ -4,6 +4,7 @@ const OrganizationRouter = require('./src/routes/Organization');
 const PackagesRouter = require('./src/routes/Organization');
 const authRouter = require('./src/routes/auth');
 const RegisterProduct = require('./src/routes/ProductRoute');
+const FetchUser = require('./src/routes/auth');
 const cors = require('cors');
 
 const startServer = async () => {
@@ -28,6 +29,7 @@ const startServer = async () => {
   app.use('/registerpackage', PackagesRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/register-products', RegisterProduct);
+  app.use('/api/users', FetchUser);
 
   // 5. Health Check Endpoint
   app.get('/health', (req, res) => {

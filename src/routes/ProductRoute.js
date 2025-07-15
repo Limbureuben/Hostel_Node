@@ -1,5 +1,5 @@
 const express = require('express');
-const { Product } = require('../models/Product');
+const Product = require('../models/Product');
 require('dotenv').config();
 const authMiddleware = require('../utils/authMiddleware');
 const multer = require('multer');

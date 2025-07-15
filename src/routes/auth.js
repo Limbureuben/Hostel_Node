@@ -136,6 +136,11 @@ router.delete('/users/:id', authMiddleware, async(req, res)=> {
   const userId = req.params.id;
 
   try {
+
+    if (req.user.role !== 'staff') {
+      return res.status(403).json({ success: false, message: 'Forbidden: staff only' });
+    }
+
     const user = await User.findByIdAndDelete(userId);
 
     if(!user) {
@@ -157,7 +162,7 @@ router.delete('/users/:id', authMiddleware, async(req, res)=> {
       error: err.message
     });
   }
-})
+});
 
 
 module.exports = router;

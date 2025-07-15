@@ -27,7 +27,7 @@ const startServer = async () => {
   app.use('/registerorganization', OrganizationRouter);
   app.use('/registerpackage', PackagesRouter);
   app.use('/api/auth', authRouter);
-  app.use('/api/register-products', RegisterProduct);
+  app.use('/api/product', RegisterProduct);
 
   // 5. Health Check Endpoint
   app.get('/health', (req, res) => {

@@ -28,7 +28,7 @@ const upload = multer({
   }
 });
 
-router.post('/register-product', authMiddleware, upload.single('image'), async (req, res) => {
+router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
     const { name, description, price, discount, stock } = req.body;
 
     try {

@@ -106,34 +106,33 @@ router.get('/get-product', async (req, res) => {
 });
 
 
-// router.get('/get-product', async (req, res) => {
-//   const page = parseInt(req.query.page) || 1;
-//   const limit = 3;
 
-//   try {
-//     const result = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
+router.delete('/delete/:id', async (req, res) => {
+  const productId = req.params.id;
 
-//     res.status(200).json({
-//       success: true,
-//       products: {
-//         current_page: result.page,
-//         data: result.docs,
-//         total: result.totalDocs,
-//         per_page: result.limit,
-//         last_page: result.totalPages,
-//         from: (result.page - 1) * result.limit + 1,
-//         to: Math.min(result.page * result.limit, result.totalDocs),
-//       }
-//     });
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(productId);
 
-//   } catch (err) {
-//     res.status(500).json({
-//       success: false,
-//       message: 'Failed to fetch products',
-//       error: err.message
-//     });
-//   }
-// });
+    if (!deletedProduct) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete product',
+      error: error.message
+    });
+  }
+});
+
 
 
 module.exports = router;

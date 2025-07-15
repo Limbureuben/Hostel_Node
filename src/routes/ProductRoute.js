@@ -55,7 +55,7 @@ router.post('/register-product', upload.single('image'), async (req, res) => {
     }
 });
 
-route.get('/get-product', async (req, res) => {
+router.get('/get-product', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 3;
 
@@ -64,7 +64,7 @@ route.get('/get-product', async (req, res) => {
 
         res.status(200).json({
             success: true,
-            products, // Contains: docs, totalDocs, limit, page, totalPages, etc.
+            products,
             });
         } catch(err) {
             res.status(500).json({

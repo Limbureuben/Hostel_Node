@@ -87,16 +87,36 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/users', async (req, res) => {
+// router.get('/users', async (req, res) => {
+//   try {
+//     const users = await User.find();
+//     res.json(users);
+//   } catch(error) {
+//     res.status(500).json({
+//       message: 'Failed to fetch users',
+//       error
+//     });
+//   }
+// })
+
+router.get('/users', async(req, res) =>{
+  const page = parseInt(req.query.page) || 1;
+  const limit = 4;
+
   try {
-    const users = await User.find();
-    res.json(users);
+    const result = await User.paginate({}, {page, limit});
+
+    re.json({
+      success: true,
+      Users: result
+    });
   } catch(error) {
     res.status(500).json({
-      message: 'Failed to fetch users',
-      error
+      success: false,
+      message: 'Server Error',
+      error: err.message
     });
   }
-})
+});
 
 module.exports = router;

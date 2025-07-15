@@ -55,24 +55,56 @@ router.post('/register-product', upload.single('image'), async (req, res) => {
     }
 });
 
+// router.get('/get-product', async (req, res) => {
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = 3;
+
+//     try {
+//         const products = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
+
+//         res.status(200).json({
+//             success: true,
+//             products,
+//             });
+//         } catch(err) {
+//             res.status(500).json({
+//                 success: true,
+//                 message: 'Failed to fetch product',
+//                 Error: err.message
+//             });
+//         }
+// });
+
 router.get('/get-product', async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 3;
+  const page = parseInt(req.query.page) || 1;
+  const limit = 3;
 
-    try {
-        const products = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
+  try {
+    const result = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
 
-        res.status(200).json({
-            success: true,
-            products,
-            });
-        } catch(err) {
-            res.status(500).json({
-                success: true,
-                message: 'Failed to fetch product',
-                Error: err.message
-            });
-        }
+    res.status(200).json({
+      success: true,
+      products: result.docs,
+      pagination: {
+        totalDocs: result.totalDocs,
+        limit: result.limit,
+        page: result.page,
+        totalPages: result.totalPages,
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevPage: result.prevPage,
+        nextPage: result.nextPage
+      }
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch products',
+      error: err.message
+    });
+  }
 });
+
 
 module.exports = router;

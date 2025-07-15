@@ -4,6 +4,7 @@ require('dotenv').config();
 const authMiddleware = require('../utils/authMiddleware');
 const multer = require('multer');
 const path = require('path');
+const { route } = require('./auth');
 const router = express.Router()
 
 const storage = multer.diskStorage({
@@ -52,6 +53,26 @@ router.post('/register-product', upload.single('image'), async (req, res) => {
             error: error.message
         });
     }
+});
+
+route.get('/get-product', async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 3;
+
+    try {
+        const products = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
+
+        res.status(200).json({
+            success: true,
+            products, // Contains: docs, totalDocs, limit, page, totalPages, etc.
+            });
+        } catch(err) {
+            res.status(500).json({
+                success: true,
+                message: 'Failed to fetch product',
+                Error: err.message
+            });
+        }
 });
 
 module.exports = router;

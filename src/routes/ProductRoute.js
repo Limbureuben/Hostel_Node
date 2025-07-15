@@ -75,24 +75,54 @@ router.post('/register-product', upload.single('image'), async (req, res) => {
 //         }
 // });
 
+// router.get('/get-product', async (req, res) => {
+//   const page = parseInt(req.query.page) || 1;
+//   const limit = 3;
+
+//   try {
+//     const products = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
+
+//     // Format to match Laravel
+//     res.status(200).json({
+//       success: true,
+//       products: {
+//         current_page: result.page,
+//         data: products.docs,
+//         total: result.totalDocs,
+//         per_page: result.limit,
+//         last_page: result.totalPages,
+//         from: (result.page - 1) * result.limit + 1,
+//         to: Math.min(result.page * result.limit, result.totalDocs),
+//       }
+//     });
+
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch products',
+//       error: err.message
+//     });
+//   }
+// });
+
+
 router.get('/get-product', async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 3;
 
   try {
-    const result = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
+    const products = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
 
-    // Format to match Laravel
     res.status(200).json({
       success: true,
       products: {
-        current_page: result.page,
-        data: result.docs,
-        total: result.totalDocs,
-        per_page: result.limit,
-        last_page: result.totalPages,
-        from: (result.page - 1) * result.limit + 1,
-        to: Math.min(result.page * result.limit, result.totalDocs),
+        current_page: products.page,
+        data: products.docs,
+        total: products.totalDocs,
+        per_page: products.limit,
+        last_page: products.totalPages,
+        from: (products.page - 1) * products.limit + 1,
+        to: Math.min(products.page * products.limit, products.totalDocs),
       }
     });
 
@@ -104,6 +134,7 @@ router.get('/get-product', async (req, res) => {
     });
   }
 });
+
 
 
 

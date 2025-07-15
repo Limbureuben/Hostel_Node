@@ -7,7 +7,7 @@ const RegisterProduct = new mongoose.Schema({
     discount: { type: Number, required: true, max: 100, default: 0 },
     stock: { type: Number, required: true, min: 0 },
     image: { type: String, required: true, default: null }
-})
+}, { timestamps: true });
 
 const Product = mongoose.model('Product', RegisterProduct)
 module.export = { Product };

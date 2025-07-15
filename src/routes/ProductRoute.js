@@ -39,7 +39,7 @@ router.post('/register-product', upload.single('image'), async (req, res) => {
             price,
             discount,
             stock,
-            image: req.file ? `/product_images/${req.file.filename}` : null,
+            image: req.file ? `http://localhost:4000/public/product_images/${req.file.filename}` : null
         });
 
         res.status(201).json({
@@ -82,18 +82,17 @@ router.get('/get-product', async (req, res) => {
   try {
     const result = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
 
+    // Format to match Laravel
     res.status(200).json({
       success: true,
-      products: result.docs,
-      pagination: {
-        totalDocs: result.totalDocs,
-        limit: result.limit,
-        page: result.page,
-        totalPages: result.totalPages,
-        hasPrevPage: result.hasPrevPage,
-        hasNextPage: result.hasNextPage,
-        prevPage: result.prevPage,
-        nextPage: result.nextPage
+      products: {
+        current_page: result.page,
+        data: result.docs,
+        total: result.totalDocs,
+        per_page: result.limit,
+        last_page: result.totalPages,
+        from: (result.page - 1) * result.limit + 1,
+        to: Math.min(result.page * result.limit, result.totalDocs),
       }
     });
 
@@ -105,6 +104,7 @@ router.get('/get-product', async (req, res) => {
     });
   }
 });
+
 
 
 module.exports = router;

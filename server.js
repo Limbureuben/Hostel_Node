@@ -5,6 +5,7 @@ const PackagesRouter = require('./src/routes/Organization');
 const authRouter = require('./src/routes/auth');
 const RegisterProduct = require('./src/routes/ProductRoute');
 const cors = require('cors');
+const path = require('path');
 
 const startServer = async () => {
   const app = express();
@@ -22,6 +23,8 @@ const startServer = async () => {
 
   // 3. Database Connection
   await connectDB();
+
+  app.use('/public', express.static(path.join(__dirname, 'public')));
 
   // 4. Routes
   app.use('/registerorganization', OrganizationRouter);

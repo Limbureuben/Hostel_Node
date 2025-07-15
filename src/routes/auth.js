@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 require('dotenv').config();
+const authMiddleware = require('../utils/authMiddleware');
 
 const router = express.Router();
 
@@ -73,7 +74,8 @@ router.post('/login', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        role: user.role
       },
       token: generateToken(user)
     });
@@ -99,14 +101,14 @@ router.post('/login', async (req, res) => {
 //   }
 // })
 
-router.get('/users', async(req, res) =>{
-  const page = parseInt(req.query.page) || 1;
-  const limit = 4;
+router.get('/users', authMiddleware, async(req, res) =>{
+   const page = parseInt(req.query.page) || 1;
+   const limit = 4;
 
   try {
-    const result = await User.paginate({}, {page, limit});
+    const result = await User.paginate({}, { page, limit, sort: { createdAt: -1 }});
 
-    re.json({
+    re.status(200).json({
       success: true,
       Users: result
     });

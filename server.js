@@ -1,7 +1,5 @@
 const express = require('express');
 const connectDB = require('./src/config/db');
-const OrganizationRouter = require('./src/routes/Organization');
-const PackagesRouter = require('./src/routes/Organization');
 const authRouter = require('./src/routes/auth');
 const RegisterProduct = require('./src/routes/ProductRoute');
 const cors = require('cors');
@@ -27,8 +25,6 @@ const startServer = async () => {
   app.use('/public', express.static(path.join(__dirname, 'public')));
 
   // 4. Routes
-  app.use('/registerorganization', OrganizationRouter);
-  app.use('/registerpackage', PackagesRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/product', RegisterProduct);
 

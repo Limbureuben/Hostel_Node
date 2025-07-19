@@ -81,8 +81,6 @@ router.get('/get-product', async (req, res) => {
 
   try {
     const result = await Product.paginate({}, { page, limit, sort: { createdAt: -1 } });
-
-    // Format to match Laravel
     res.status(200).json({
       success: true,
       products: {

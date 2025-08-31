@@ -33,8 +33,8 @@ router.post('/register', async (req, res) => {
     
     const user = await User.create({ 
       username, 
-      email, 
-      password, 
+      email,
+      password,
       role: role || 'user'
     });
     res.status(201).json({

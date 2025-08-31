@@ -2,6 +2,8 @@ const express = require('express');
 const connectDB = require('./src/config/db');
 const authRouter = require('./src/routes/auth');
 const RegisterProduct = require('./src/routes/ProductRoute');
+// const RegisterProductData = require('./src/routes/productDataRoute');
+const RegisterProductData = require('./src/routes/ProductRoute');
 const cors = require('cors');
 const path = require('path');
 
@@ -10,7 +12,8 @@ const startServer = async () => {
 
   // 1. CORS Middleware - MUST come first
   app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: '*',
+    // origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -27,6 +30,7 @@ const startServer = async () => {
   // 4. Routes
   app.use('/api/auth', authRouter);
   app.use('/api/product', RegisterProduct);
+  app.use('/api/registerproduct', RegisterProductData);
 
   // 5. Health Check Endpoint
   app.get('/health', (req, res) => {
@@ -34,7 +38,7 @@ const startServer = async () => {
   });
 
   const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server ready at http://localhost:${PORT}`);
   });
 };
